@@ -1,0 +1,50 @@
+//C program to print the calender of any desired year entered by the user.
+
+#include<stdio.h>
+#include<stdlib.h>
+
+//Code to get the 1st day of any year i.e. 1st January.
+int get_1st_weekDay(int year)
+{
+    int day;
+    day = (((year - 1) * 365) + ((year - 1) / 4) -  ((year - 1) / 100) + ((year) / 400) + 1) % 7;  //Simple algorithm to find the 1st
+                                                                                                   //weekday of any year.
+    return day;
+}
+int main()
+{
+    int year,month,day,daysInMonth,weekDay=0,startingDay;  //weekDay=0 stands for the sunday.
+    printf("Enter your desired year: ");
+    scanf("%d",&year);
+    char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
+    int monthDay[]={31,28,31,30,31,30,31,31,30,31,30,31}; //Respective number of days in any month.
+    
+    //Code to make changes to the number of days in the month of February according to the year
+    //i.e.leap year or a normal year.
+    if((year%4 ==0 && year%100 != 0) || year%400 == 0)
+     monthDay[1]= 29; 
+    
+    
+    startingDay = get_1st_weekDay(year);
+    for (month=0 ; month<=12 ; month++)
+    {
+        daysInMonth = monthDay[month];
+        printf("\n\n^^^^^^^^^^^^^^^^^^%s^^^^^^^^^^^^^^^^^^^^\n",months[month]);
+        printf("\n  Sun  Mon  Tue  Wed  Thu  Fri  Sat\n");
+        
+        for(weekDay = 0; weekDay < startingDay; weekDay++)
+        printf("     ");
+        for(day=1 ; day<=daysInMonth ; day++)
+        {
+            printf("%5d",day);
+
+            if(++weekDay > 6)   //Code to change the line of the respective date according to the days
+                                //i.e. after saturday the dates again will come to sunday(to the new line).
+            {
+                printf("\n");
+                weekDay = 0;
+            }
+            startingDay = weekDay;
+        }
+    }
+}
